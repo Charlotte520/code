@@ -1,0 +1,21 @@
+最后一句是递归函数，且返回值不属于表达式的一部分。
+int factorial(int n) {
+  if (n == 1) {return 1;}
+  else return n * factorial(n-1);
+}
+不是尾递归，最后一句是表达式。
+
+int factorial(int n, int result) {
+  if (n == 1) {return 1;}
+  else return factorial(n-1, n * result);
+}
+可重复利用栈帧，避免overflow。
+
+函数式编程的循环：
+define mylist = [1,2,3]
+first(mylist)
+rest(mylist)
+function sum(list, result) {
+  if ([] == list) {return result;}
+  else sum(rest(list), first(list) + result);
+}
