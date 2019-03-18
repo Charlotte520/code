@@ -1,3 +1,11 @@
+适合并发编程，无side effect，不共享变量，可安全调度到任何cpu core，无加锁问题
+
+1.不变量
+不能修改传递给函数的变量
+不能修改全局变量
+同样的输入，返回值总相同
+
+2.尾递归
 最后一句是递归函数，且返回值不属于表达式的一部分。
 int factorial(int n) {
   if (n == 1) {return 1;}
@@ -19,3 +27,16 @@ function sum(list, result) {
   if ([] == list) {return result;}
   else sum(rest(list), first(list) + result);
 }
+
+3. 高阶函数：抽取公共部分，让函数生成函数
+function funMaker(fun) {
+  header();
+  fun();
+  footer();
+}
+define f1 = funMaker( function(){...}  )
+
+4. 声明式编程
+java 8: int cnt = list.stream().filter(l -> l.getAge() < 18).count();
+
+5. currying，惰性求值，macro
