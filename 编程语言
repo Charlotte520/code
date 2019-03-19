@@ -1,0 +1,79 @@
+1. c vs java
+c：一次编写到处编译。
+如何用系统平台api？条件编译：
+#ifdef _WINDOWS_
+  createThread()；
+#else
+  Pthread_create();
+#endif
+
+直接操作内存，和硬件交互。
+编译链接后，成为.exe，独立执行的程序。java.class必须被java.exe进程装载，作为线程运行，访问 区、堆等空间。
+
+2. python vs java
+python语法简单，动态语言，运行时确定类型。运行时增强类，修改方法，实现AOP。java类load后无法修改，要代码增强，可用ASM工具操作字节码，创建新类，织入切面代码。
+class Order:
+  def save(self): print ("save")
+
+old_save = Order.save
+
+def saveWlog(self):
+  print("start")
+  old_save(self)
+  print("end")
+  
+Order.save=saveWlog
+
+t=Order()
+t.save()  //执行saveWlog
+
+3. go
+静态类型。没有继承，只有组合。多态：不用强制类实现接口，只要和接口一样的方法就可当作那个接口用，类似python的duck typing。
+goroutine：轻量级线程。加入全局运行队列，调度器分配给某逻辑处理器，再绑定到唯一的OS线程，运行goroutine。阻塞时，goroutine和逻辑处理器解脱关联，和os线程绑定，读写完成后再回队列。
+逻辑处理器相当于线程调度器；java、python等不需要，java将用户线程直接映射到os线程。goroutine相当于用户空间的线程，空间小，切换在用户空间，开销小，适合大量并发。goroutine间用channel通信。
+编译成.exe执行，静态链接，.exe包括了所有东西，包括gc、runtime等。
+
+4. javascript
+浏览器语言：操作html DOM和浏览器。通过XMLHttpRequest调用server接口，局部刷新页面。xml->json传输数据，高效。
+无官方类库，有各种框架：AngularJS、React、Backbone、Vue、Ember、JQuery等。无IDE，直接编辑，再到浏览器运行即可，轻量。
+没有类：面向原型的OO，OO即属性+方法
+var animal = {
+  name: "animal",
+  eat: function() { console.log(this.name + "is eating"); }
+};    
+animal.eat();
+
+animal.color = "black"  //对象不和类关联，可直接添加属性
+
+var dog = {
+  name: "dog",
+  _proto_: animal
+};
+dog.eat(); //通过_proto_属性关联其他对象，类似于继承。调用eat()时，先在dog的方法列表找，找不到则去原型的方法中找，再找不到，再到原型的原型中找，直到Object。仍找不到，undefined。
+
+function Student(name) {  //构造函数，类似于class
+  this.name = name;
+  this.hello = function() { console.log("hello," + this.name);}
+};
+andy = new Student("andy");
+andy.hello();  //这种写法导致每个对象都有一个hello()函数，浪费空间
+
+function Student(name) {
+  this.name = name;
+}
+
+Student.prototype = {
+  hello: function() {console.log("hello," + this.name);}
+}
+
+var andy = new Student("andy");
+andy.hello();  //创建对象时，将_proto_指向Student.prototype对象
+
+语法糖：
+class Student {
+  constuctor(name) {this.name = name;}
+  hello() {xx}
+}
+var andy = new Student("andy");
+andy.hello();
+
