@@ -77,3 +77,47 @@ class Student {
 var andy = new Student("andy");
 andy.hello();
 
+函数是一等公民，不用存在与类中，声明后即可使用。函数和对象都可作为值传递，组合实现高阶函数。
+let animal = {name: "animal"};
+function eat(animal) { console.log(animal.name + "is eating");}
+eat(animal); // 任何有name属性的对象都可调用，类型不确定，通过UT保证正确性。
+
+函数作为参数：
+function each(list,fun) {
+  for (let i = 0; i < list.length; i++) fun(list[i]);
+}
+let animals = [dog, cat, me];
+each(animals, eat);
+
+函数作为返回值：
+function createFun() {
+  var s = "is eating";
+  function eat(animal) {
+    console.log(animal.name + s);
+  }
+  return eat;
+}
+
+var eat = createFun(); //createFun已经执行完，无法通过栈帧访问s。函数创建时建立scope chain关联，eat()的parent作用域为createFun，-> global作用域。执行时根据static/lexical scope查找。
+eat(animal);
+闭包：函数 + static parent scope，使函数可以访问外部函数的变量。
+
+node.js: server端的js
+事件驱动编程，一个线程处理所有请求。发生事件时，执行回调函数。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
