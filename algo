@@ -15,8 +15,38 @@
 堆：不对topk排序。o(nlogk)
 随机选择：i=partition(arr,1,n)。若i>k，递归a[1,i-1]求第k大。若i<k，递归a[i+1,n]求k-i大。
 
-4.o(n)排序 
+4.排序 
+o(n):
 基数排序radix sort：对每个基，遍历arr，放入bucket，再遍历bucket，将元素放回arr。稳定
 计数排序counting sort：元素个数多，范围小。C[max-min]
 桶排序bucket sort：元素在某范围内均匀分布。空间：桶+桶内链表。遍历将元素入桶，桶内插入排序。稳定
+
+完美排序：三等分，先排前2/3,再排后2/3，再排前2/3. 时间o(n^2.7)
+    void stoogeSort(int[] A, int low, int high) {
+        if (A[low] > A[high])   swap(A,low,high);
+        if (low+1>=high) return;
+        int split = (high-low+1)/3;
+        stoogeSort(A,low,high-split);
+        stoogeSort(A,low+split,high);
+        stoogeSort(A,low,high-split);
+    }
+    
+冒泡排序：比较相邻两个元素大小，每一轮使一个达到目标位置。=》搅拌排序：双向。先从左向右冒泡，使最大的到最右端；再从右向左冒泡，使最小的到最左端。不断缩小未排序元素的范围。若大部分元素有序，可减少排序的轮数。
+
+插入排序：
+
+5.随机化布雷
+1)随机在二维数组中找一个点即可。缺点：有可能重复布雷，导致总雷数不够
+        for (int i = 0; i < mineCount; i++) {
+            int r = Random.random(0,row-1);
+            int c = Random.random(0,col-1);
+            map[r][c]=true;
+        }
+2)布雷前先判断是否已经布雷，若已经布雷循环找下一个随机位置。缺点：mineCount很大时容易死循环。
+3)先布在前n个位置，再随机打乱，次数越多越好。缺：依赖于打乱次数，不够高时导致不随机；每个位置不等概率。
+4)洗牌算法：将最后一个数与前面任意n-1个中的一个交换，倒数第二个与前n-2中的一个交换。。。
+
+6.贪心算法
+较大的问题，找到与子问题的重叠，划分为多个小问题。每个子问题在当前状态选最好的，但不保证全局最优。
+最小生成树：prim，挑选的顶点是候选边中min weight的边的一个端点。kruskal，每次选min weight边加入集合。
 
